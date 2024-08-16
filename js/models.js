@@ -1,5 +1,7 @@
 "use strict";
 
+//I only need to complete the functions getHostName and addStory in this file.
+
 const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
 
 /******************************************************************************
@@ -14,7 +16,7 @@ class Story {
 
   constructor({ storyId, title, author, url, username, createdAt }) {
     this.storyId = storyId;
-    this.title = title;
+    this.title = title; // which will be assigned by user, everything else will be assigned without direct input from the user
     this.author = author;
     this.url = url;
     this.username = username;
@@ -25,7 +27,7 @@ class Story {
 
   getHostName() {
     // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    return 'hostname.com';
   }
 }
 
@@ -52,6 +54,7 @@ class StoryList {
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
     //  instance method?
+    // instance would work on specific stories, but we want this ot work on all stories, therefore it should remain a static method.
 
     // query the /stories endpoint (no auth required)
     const response = await axios({
@@ -68,13 +71,22 @@ class StoryList {
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
-   * - obj of {title, author, url}
+   * - obj of {title, author, url} called newStory
    *
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "POST",
+      data: {
+        token: user.loginToken,
+        story: newStory
+      }
+    });
+
   }
 }
 
